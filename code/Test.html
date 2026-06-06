@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- doesnt work out of my control -->
+<html>
+  <head>
+    <base target="_top">
+
+    <title>NHS Credit Tracker</title>
+
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      
+      #mainbody {
+        padding: 30px;
+      }
+      #description {
+        padding: 30px;
+        font-family:arial;
+      }
+      #description p {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+
+      #home-first-half {
+        //this is the background image of the top section of the website
+        //change by putting url in url place
+        //
+        background-image: url("https://raw.githubusercontent.com/KYKY5435/BXScience-NHS-Credit-Tracker/main/assests/IMG_2379.png");
+        height: 33vh;
+        margiv-top: -10px;
+        background-position: center;
+        background-size: cover;
+        background-attachment: scroll;
+        background-repeat: no-repeat;
+
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="home-first-half"> 
+      <h1 style="font-family:verdana;" style="font-size:300%;" style="padding:30px;" > National Honor Society Credit Tracker</h1>
+    </div>
+
+    
+    <div id="mainbody">
+      <!-- <h1 style="font-family:verdana;" style="font-size:300%;">NHS Credit Tracker</h1> -->
+      <div> <h6 style="font-family:arial;"> <?= ERROR_MESSAGE ?> </h6> </div>
+      <div> <i style="font-family:arial;"> Signed in as: <?= USER_EMAIL ?> </i> </div>
+
+      <br>
+      <hr>
+      <br>
+
+      <div> <h2 style="font-family:verdana;"> <b style="font-family:arial;">Attendance: </b> </h2> </div>
+      <div> <b style="font-family:arial;">Present: <?= ATTENDANCE_PRESENT ?>; Absent: <?= ATTENDANCE_ABSENT ?>; Excused: <?= ATTENDANCE_EXCUSED ?>; Cut: <?= ATTENDANCE_CUT ?></b> </div>
+      <br>
+      <div> <b style="font-family:arial;">Meetings: </b> </div>
+      <div> <table id="attendance_table">  
+        <tr>
+          <th style="width:20%">Date</th>
+          <th style="width:20%">Attendance</th>
+        </tr>
+      </table> </div>
+      <br>
+      <div> <b style="font-family:arial;">Mandatory Events: </b> </div>
+      <div> <table id="mandatory_table">  
+        <tr>
+          <th style="width:20%">Event</th>
+          <th style="width:20%">Date</th>
+          <th style="width:20%">Attendance</th>
+        </tr>
+      </table> </div>
+
+      <br>
+      <hr>
+      <br>
+      
+      <div> <h2 style="font-family:verdana;"> <b style="font-family:arial;"> Service Credits: </b> </h2> </div>
+      
+      <div> <b style="font-family:arial;">Service: <?= SERVICE_STATUS[1] ?>; Project: <?= SERVICE_STATUS[0] ?>; Tutoring: <?= SERVICE_STATUS[2] ?>; Probation: <?= SERVICE_STATUS[3] ?></b> </div>
+      <br>
+      <div> <u style="font-family:arial;">You need: <span style="background-color: <?= SERVICE_NEEDS_LEFT_COLORS[1] ?>;"> Service: <?= SERVICE_NEEDS_LEFT[1] ?></span>; <span style="background-color: <?= SERVICE_NEEDS_LEFT_COLORS[0] ?>;">Project: <?= SERVICE_NEEDS_LEFT[0] ?></span>; <span style="background-color: <?= SERVICE_NEEDS_LEFT_COLORS[2] ?>;">Tutoring: <?= SERVICE_NEEDS_LEFT[2] ?></span> </u> </div>
+      <br>
+      <div> <table id="service_table">  
+        <tr>
+          <th style="width:30%">Event</th>
+          <th style="width:30%">Date</th>
+          <th style="width:10%">Type</th>
+          <th style="width:30%">Number of Credits</th>
+        </tr>
+      </table> </div>
+
+
+      <script>
+        const service_events = <?!= JSON.stringify(SERVICE_TABLE) ?>;
+        const attendance = <?!= JSON.stringify(ATTENDANCE_TABLE) ?>;
+        const mandatory = <?!= JSON.stringify(MANDATORY_TABLE) ?>;
+        try {
+        let table = document.getElementById('attendance_table');
+        attendance.forEach((e) => {
+            const row = table.insertRow(-1);
+            row.insertCell(0).textContent = e.Date;
+            row.insertCell(1).textContent = e.Status;
+        });
+        } catch (e) {
+          console.log(e)
+        }
+        try {
+        let table = document.getElementById('mandatory_table');
+        mandatory.forEach((e) => {
+            const row = table.insertRow(-1);
+            row.insertCell(0).textContent = e.Name;
+            row.insertCell(1).textContent = e.Date;
+            row.insertCell(2).textContent = e.Status;
+        });
+        } catch (e) {
+          console.log(e)
+        }
+        try {
+        table = document.getElementById('service_table');
+        service_events.forEach((e) => {
+            const row = table.insertRow(-1);
+            row.insertCell(0).textContent = e.Name;
+            row.insertCell(1).textContent = e.Date;
+            row.insertCell(2).textContent = e.Type;
+            row.insertCell(3).textContent = e.Status;
+        });
+
+        } catch (e) {
+          console.log(e)
+        }
+      </script>
+    </div>
+    <hr>
+    <div id="description">
+      <h2 style="font-family:verdana;"> What are Credits? </h2>
+      <p> Credits are required in order for you to stay in National Honors Society for the next Semester </p>
+      
+      <p> You need in total: <span style="background-color: <?= SERVICE_NEEDS_LEFT_COLORS[1] ?>;"> Service: <?= SERVICE_NEEDS[1] ?></span>; <span style="background-color: <?= SERVICE_NEEDS_LEFT_COLORS[0] ?>;">Project: <?= SERVICE_NEEDS[0] ?></span>; <span style="background-color: <?= SERVICE_NEEDS_LEFT_COLORS[2] ?>;">Tutoring: <?= SERVICE_NEEDS[2] ?></span> </p>
+      
+      <p> <b> Make sure to check Google Classroom regularly for new service or project opportunities. </b> Excess credits are not carried over to the next semester.</p>
+
+      <p> <u> Credits can be transferred only for the fall semester</u>, unless otherwise stated. 1 service credit is worth 2 project credits. 1 service credit is worth 1 tutoring credit. You can only make 3 service-tutoring credit conversions and 1 serivce-project credit conversion. Conversions of service-project credits are prioritized.</p>
+
+      <hr>
+
+      <h2 style="font-family:verdana;"> What are Tutoring Credits? </h2>
+
+      <p> <b> You can only tutor Bronx Science Students in order to obtain credit. </b> </p>
+
+      <p> You can get tutoring credits by either tutoring one-on-one through a match by the NHS email "Tutoring Pairing Email", SGI tutoring with teacher's signature, or through Science for Bronx. </p>
+
+      <p> You submit your tutoring credits at the end of each semester via a google form. </p>
+
+      <hr>
+
+      <h2 style="font-family:verdana;"> Obtaining Credits </h2>
+
+      <p> You can obtain service and prject credits by checking the NHS google classroom for assignments with sign-up sheets. Please mark all assignments as done, including ones irrelevant to you, as this allows us to know you have seen the information posted. </p>
+
+      <p> Service and project credits will be posted at either 7:30 AM or 4:30 PM. An email will be sent a day before to let you know when the events will be posted. </p>
+
+      <p> Sign up for service and project credits using the Sheet linked with the assignment. Sign up is first come first serve, so make sure to sign up quickly. </p>
+
+      <p> If there is any urgent service opportunities, we will post them as soon as possible. </p>
+
+      <hr>
+
+      <h2 style="font-family:verdana;"> Meeting Attendance </h2>
+
+      <p> <b> <u> You must attend all NHS meetings. </u> </b> </p>
+
+      <p> You get one excused absence per year. You must fill out the excused absence form on google classroom 24 hours before a meeting. </p>
+      
+      <p> All other <b> excused </b> absences will result in 1 probation. If you submit your excused absence form late (past 24 hours) you will recieve 1 probation. </p>
+      
+      <p> Unexcused absences will result in 2 probations. A 2nd unexcused absence will result in you being removed from NHS</p>
+      
+      <hr>
+
+      <h2 style="font-family:verdana;"> Probations </h2>
+
+      <p> You must also not have more than 3 Probations. Once you have your 3rd Probation, you will be removed from NHS and will not be able to join back. <b> <i> You aquire probations by not attending meetings without being excused (2 Probations), not attending a service you signed up for (1 Probation), not responding to an email within 24 hours (1 Probation), and not submitting assignments on Google Classroom on time (1 Probation). </b> </i> </p>
+      
+      <p> You have: <?= Number(SERVICE_STATUS[3]) + Number(ATTENDANCE_CUT * 2)?> Probations and <?=  ATTENDANCE_CUT ?> unexcused absences from meetings </p>
+      
+      <p> To clear 1 Probation, you must get either 2 SERVICE credits or 1 PROJECT credit. This credit will only be used for the probation and will not count towards its categories. Probations reset at the end of the Semester.</p>
+    </div>
+    <hr>
+    <div id="description">
+      <h2 style="font-family:verdana;"> Other info </h2>
+      <p> You can get a printable version of your credits <button onclick="window.print()" style="font-size:12px;">  here⎘  </button> </p>
+
+      <p> The full page can be seen <a href="https://script.google.com/a/macros/nycstudents.net/s/AKfycbzwW1PadjRGihFOZvnK0m6chLhlcNvEbwwkkHM0VO2GbA5ZnqVsDEbqU1Heuba77f9i/exec"> here⎘ </a>  </p>
+
+      <p> This tracker was made by Kyle Thomas ('27) </p>
+    </div>
+    <div style="padding-bottom:120px;"> </div>
+  </body>
+</html>
